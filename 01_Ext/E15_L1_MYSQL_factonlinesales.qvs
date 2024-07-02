@@ -1,0 +1,29 @@
+SET vArchiveName = L1_MYSQL_factonlinesales;
+
+[$(vArchiveName)]:
+SELECT OnlineSalesKey,
+	DateKey,
+	StoreKey,
+	ProductKey,
+	PromotionKey,
+	CurrencyKey,
+	CustomerKey,
+	SalesOrderLineNumber,
+	SalesQuantity,
+	SalesAmount,
+	ReturnQuantity,
+	ReturnAmount,
+	DiscountQuantity,
+	DiscountAmount,
+	TotalCost,
+	UnitCost,
+	UnitPrice,
+	ETLLoadID,
+	LoadDate,
+	UpdateDate,
+	SalesOrderNumber
+FROM spanish.factonlinesales;
+
+Store $(vArchiveName) into [$(vR_QvdExt)$(vArchiveName).qvd]  (qvd);
+Drop table $(vArchiveName);
+//---------------------------------------------------------------------------------

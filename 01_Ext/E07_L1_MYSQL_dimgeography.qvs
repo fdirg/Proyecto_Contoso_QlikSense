@@ -1,0 +1,20 @@
+SET vArchiveName = L1_MYSQL_dimgeography;
+
+[$(vArchiveName)]:
+SELECT GeographyKey,
+	GeographyTypeKey,
+	GeographyType,
+	ContinentName,
+	CityName,
+	StateProvinceName,
+	RegionCountryName,
+	Geometry,
+	ETLLoadID,
+	LoadDate,
+	UpdateDate
+FROM spanish.dimgeography;
+
+Store $(vArchiveName) into [$(vR_QvdExt)$(vArchiveName).qvd]  (qvd);
+Drop table $(vArchiveName);
+
+//---------------------------------------------------------------------------------

@@ -1,0 +1,35 @@
+SET vArchiveName = L1_MYSQL_dimstore;
+
+[$(vArchiveName)]:
+SELECT StoreKey,
+	GeographyKey,
+	StoreManager,
+	StoreType,
+	StoreName,
+	StoreDescription,
+	Status,
+	OpenDate,
+	CloseDate,
+	EntityKey,
+	ZipCode,
+	ZipCodeExtension,
+	StorePhone,
+	StoreFax,
+	AddressLine1,
+	AddressLine2,
+	CloseReason,
+	EmployeeCount,
+	SellingAreaSize,
+	LastRemodelDate,
+	GeoLocation,
+	Geometry,
+	ImageUrl,
+	ETLLoadID,
+	LoadDate,
+	UpdateDate
+FROM spanish.dimstore;
+
+Store $(vArchiveName) into [$(vR_QvdExt)$(vArchiveName).qvd]  (qvd);
+Drop table $(vArchiveName);
+
+//---------------------------------------------------------------------------------

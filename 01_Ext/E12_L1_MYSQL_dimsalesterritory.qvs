@@ -1,0 +1,24 @@
+SET vArchiveName = L1_MYSQL_dimsalesterritory;
+
+[$(vArchiveName)]:
+SELECT SalesTerritoryKey,
+	GeographyKey,
+	SalesTerritoryLabel,
+	SalesTerritoryName,
+	SalesTerritoryRegion,
+	SalesTerritoryCountry,
+	SalesTerritoryGroup,
+	SalesTerritoryLevel,
+	SalesTerritoryManager,
+	StartDate,
+	EndDate,
+	Status,
+	ETLLoadID,
+	LoadDate,
+	UpdateDate
+FROM spanish.dimsalesterritory;
+
+Store $(vArchiveName) into [$(vR_QvdExt)$(vArchiveName).qvd]  (qvd);
+Drop table $(vArchiveName);
+
+//---------------------------------------------------------------------------------

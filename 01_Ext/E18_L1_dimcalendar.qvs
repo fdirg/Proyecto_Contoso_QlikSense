@@ -1,0 +1,36 @@
+﻿Set vNombreArchivo = L1_dimcalendar;
+​
+Let vFechaIni = Num(MakeDate(2000,1,1)); 
+Let vFechaFin = Num(MakeDate(2030,12,31));
+​
+Let vNumDias = $(vFechaFin) - $(vFechaIni);
+​
+$(vNombreArchivo):
+    Load 
+        *,
+        Year(DateKey) as Year,
+        Month(DateKey) as Month,
+        Week(DateKey) as Week,
+        Day(DateKey) as Day,
+        Date(QuarterStart(DateKey), 'YYYYMM') as QuarterPeriod,
+        Date(MonthStart(DateKey), 'YYYYMM') as Period,
+        QuarterName(DateKey) as QuarterName,
+        'Q' & Ceil(Month(DateKey)/3) as Quarter,
+        'S' & Ceil(Month(DateKey)/2) as Semester,
+        Num(DateKey) as DateKey_Num,
+        Num(MonthStart(DateKey)) as Period_Num,
+        Num(Month(DateKey)) as Month_Num,
+        'MTH' as _zCalendar_Type
+        ; 
+    Load
+        RecNo() as Orden,
+        $(vFechaIni) + RecNo() - 1 as DateKey 
+        AutoGenerate $(vNumDias);
+        
+Store $(vNombreArchivo) into [$(vR_QvdExt)$(vNombreArchivo).qvd] (qvd);
+Drop Table $(vNombreArchivo);
+​
+Let vNombreArchivo = Null();
+Let vFechaIni = Null();
+Let vFechaFin = Null();
+Let vNumDias = Null();

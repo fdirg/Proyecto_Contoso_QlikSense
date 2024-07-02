@@ -1,0 +1,48 @@
+SET vArchiveName = L1_XSLX_factbudget;
+
+[$(vArchiveName)]:
+LOAD
+    ChannelKey,
+    StoreKey,
+    ProductKey,
+    "39083",
+    "39114",
+    "39142",
+    "39173",
+    "39203",
+    "39234",
+    "39264",
+    "39295",
+    "39326",
+    "39356",
+    "39387",
+    "39417",
+    "39448",
+    "39479",
+    "39508",
+    "39539",
+    "39569",
+    "39600",
+    "39630",
+    "39661",
+    "39692",
+    "39722",
+    "39753",
+    "39783",
+    "39814",
+    "39845",
+    "39873",
+    "39904",
+    "39934",
+    "39965",
+    "39995",
+    "40026",
+    "40057",
+    "40087",
+    "40118",
+    "40148"
+FROM [$(vR_Data)Contoso - Budget.xlsx]
+(ooxml, embedded labels, header is 1 lines, table is Budget);
+
+Store $(vArchiveName) into [$(vR_QvdExt)$(vArchiveName).qvd]  (qvd);
+Drop table $(vArchiveName);

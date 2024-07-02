@@ -1,0 +1,23 @@
+SET vArchiveName = L1_MYSQL_dimpromotion;
+
+[$(vArchiveName)]:
+SELECT PromotionKey,
+	PromotionLabel,
+	PromotionName,
+	PromotionDescription,
+	DiscountPercent,
+	PromotionType,
+	PromotionCategory,
+	StartDate,
+	EndDate,
+	MinQuantity,
+	MaxQuantity,
+	ETLLoadID,
+	LoadDate,
+	UpdateDate
+FROM spanish.dimpromotion;
+
+Store $(vArchiveName) into [$(vR_QvdExt)$(vArchiveName).qvd]  (qvd);
+Drop table $(vArchiveName);
+
+//---------------------------------------------------------------------------------

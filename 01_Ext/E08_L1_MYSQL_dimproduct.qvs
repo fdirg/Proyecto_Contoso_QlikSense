@@ -1,0 +1,41 @@
+SET vArchiveName = L1_MYSQL_dimproduct;
+
+[$(vArchiveName)]:
+SELECT ProductKey,
+	ProductLabel,
+	ProductName,
+	ProductDescription,
+	ProductSubcategoryKey,
+	Manufacturer,
+	BrandName,
+	ClassID,
+	ClassName,
+	StyleID,
+	StyleName,
+	ColorID,
+	ColorName,
+	`Size`,
+	SizeRange,
+	SizeUnitMeasureID,
+	Weight,
+	WeightUnitMeasureID,
+	UnitOfMeasureID,
+	UnitOfMeasureName,
+	StockTypeID,
+	StockTypeName,
+	UnitCost,
+	UnitPrice,
+	AvailableForSaleDate,
+	StopSaleDate,
+	Status,
+	ImageURL,
+	ProductURL,
+	ETLLoadID,
+	LoadDate,
+	UpdateDate
+FROM spanish.dimproduct;
+
+Store $(vArchiveName) into [$(vR_QvdExt)$(vArchiveName).qvd]  (qvd);
+Drop table $(vArchiveName);
+
+//---------------------------------------------------------------------------------

@@ -1,0 +1,38 @@
+SET vArchiveName = L1_MYSQL_dimemployee;
+
+[$(vArchiveName)]:
+SELECT EmployeeKey,
+	ParentEmployeeKey,
+	FirstName,
+	LastName,
+	MiddleName,
+	Title,
+	HireDate,
+	BirthDate,
+	EmailAddress,
+	Phone,
+	MaritalStatus,
+	EmergencyContactName,
+	EmergencyContactPhone,
+	SalariedFlag,
+	Gender,
+	PayFrequency,
+	BaseRate,
+	VacationHours,
+	CurrentFlag,
+	SalesPersonFlag,
+	DepartmentName,
+	StartDate,
+	EndDate,
+	Status,
+	ImageUrl,
+	ProfileUrl,
+	ETLLoadID,
+	LoadDate,
+	UpdateDate
+FROM spanish.dimemployee;
+
+Store $(vArchiveName) into [$(vR_QvdExt)$(vArchiveName).qvd]  (qvd);
+Drop table $(vArchiveName);
+
+//---------------------------------------------------------------------------------

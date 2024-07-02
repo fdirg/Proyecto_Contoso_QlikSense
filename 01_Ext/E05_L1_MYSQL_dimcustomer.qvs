@@ -1,0 +1,38 @@
+SET vArchiveName = L1_MYSQL_dimcustomer;
+
+[$(vArchiveName)]:
+SELECT CustomerKey,
+	GeographyKey,
+	CustomerLabel,
+	Title,
+	FirstName,
+	MiddleName,
+	LastName,
+	NameStyle,
+	BirthDate,
+	MaritalStatus,
+	Suffix,
+	Gender,
+	EmailAddress,
+	YearlyIncome,
+	TotalChildren,
+	NumberChildrenAtHome,
+	Education,
+	Occupation,
+	HouseOwnerFlag,
+	NumberCarsOwned,
+	AddressLine1,
+	AddressLine2,
+	Phone,
+	DateFirstPurchase,
+	CustomerType,
+	CompanyName,
+	ETLLoadID,
+	LoadDate,
+	UpdateDate
+FROM spanish.dimcustomer;
+
+Store $(vArchiveName) into [$(vR_QvdExt)$(vArchiveName).qvd]  (qvd);
+Drop table $(vArchiveName);
+
+//---------------------------------------------------------------------------------

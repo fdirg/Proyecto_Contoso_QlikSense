@@ -1,0 +1,16 @@
+SET vArchiveName = L1_MYSQL_$(vDim)currency;
+
+[$(vArchiveName)]:
+SELECT CurrencyKey,
+	CurrencyLabel,
+	CurrencyName,
+	CurrencyDescription,
+	ETLLoadID,
+	LoadDate,
+	UpdateDate
+FROM spanish.dimcurrency;
+
+Store $(vArchiveName) into [$(vR_QvdExt)$(vArchiveName).qvd]  (qvd);
+Drop table $(vArchiveName);
+
+//---------------------------------------------------------------------------------

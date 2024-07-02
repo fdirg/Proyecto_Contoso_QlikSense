@@ -1,0 +1,17 @@
+SET vArchiveName = L1_MYSQL_dimproductsubcategory;
+
+[$(vArchiveName)]:
+SELECT ProductSubcategoryKey,
+	ProductSubcategoryLabel,
+	ProductSubcategoryName,
+	ProductSubcategoryDescription,
+	ProductCategoryKey,
+	ETLLoadID,
+	LoadDate,
+	UpdateDate
+FROM spanish.dimproductsubcategory;
+
+Store $(vArchiveName) into [$(vR_QvdExt)$(vArchiveName).qvd]  (qvd);
+Drop table $(vArchiveName);
+
+//---------------------------------------------------------------------------------

@@ -1,0 +1,36 @@
+SET vArchiveName = L1_MYSQL_dimdate;
+
+[$(vArchiveName)]:
+SELECT Datekey,
+	FullDateLabel,
+	DateDescription,
+	CalendarYear,
+	CalendarYearLabel,
+	CalendarHalfYear,
+	CalendarHalfYearLabel,
+	CalendarQuarter,
+	CalendarQuarterLabel,
+	CalendarMonth,
+	CalendarMonthLabel,
+	CalendarWeek,
+	CalendarWeekLabel,
+	CalendarDayOfWeek,
+	CalendarDayOfWeekLabel,
+	FiscalYear,
+	FiscalYearLabel,
+	FiscalHalfYear,
+	FiscalHalfYearLabel,
+	FiscalQuarter,
+	FiscalQuarterLabel,
+	FiscalMonth,
+	FiscalMonthLabel,
+	IsWorkDay,
+	IsHoliday,
+	HolidayName,
+	EuropeSeason,
+	NorthAmericaSeason,
+	AsiaSeason
+FROM spanish.dimdate;
+
+Store $(vArchiveName) into [$(vR_QvdExt)$(vArchiveName).qvd]  (qvd);
+Drop table $(vArchiveName);

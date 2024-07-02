@@ -1,0 +1,24 @@
+SET vArchiveName = L1_MYSQL_dimRFM;
+
+[$(vArchiveName)]:
+SELECT CustomerKey,
+	Transac,
+	FirstPurchasedate,
+	LastPurchasedate,
+	TotalRevenue,
+	TileNumR,
+	TileNumF,
+	TileNumM,
+	`R_FLAG`,
+	`F_FLAG`,
+	`M_FLAG`,
+	`RFM_Score`,
+	TAG,
+	ACTIVITY,
+	`ACTIONABLE_TIP`
+FROM spanish.RFM;
+
+Store $(vArchiveName) into [$(vR_QvdExt)$(vArchiveName).qvd]  (qvd);
+Drop table $(vArchiveName);
+
+//---------------------------------------------------------------------------------
