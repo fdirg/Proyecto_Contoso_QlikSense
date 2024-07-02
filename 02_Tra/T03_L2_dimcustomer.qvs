@@ -1,0 +1,65 @@
+Set vNombreArchivo = L2_dimcustomer;
+
+Map_MaritalStatus:
+Mapping
+Load * Inline [
+MaritalStatusId, MaritalStatus
+M, Married
+S, Single
+D, Divorce
+];
+
+$(vNombreArchivo):
+  LOAD
+    CustomerKey,
+    GeographyKey as GeographyKeyCustomer,
+    CustomerLabel,
+    Title,
+
+    FirstName & If(IsNull(MiddleName), '', ' ' & MiddleName) & ' ' & LastName as FullName,
+
+    NameStyle,
+    BirthDate,
+
+    MaritalStatus as MaritalStatusId,
+    If(Lower(CustomerType) = 'person', ApplyMap('Map_MaritalStatus', MaritalStatus, 'Otros')) as MaritalStatus,
+
+    If(MaritalStatus = 'M' and TotalChildren > 0, 'Married whit childrens', 
+    If(MaritalStatus = 'M' and TotalChildren = 0, 'Married whitout childrens',
+    If(MaritalStatus = 'S' and TotalChildren > 0, 'Single whit childrens',
+    If(MaritalStatus = 'S' and TotalChildren = 0, 'Single whitout childrens')))) as ChildrenStatus,
+
+    Suffix,
+    Gender,
+    EmailAddress,
+    YearlyIncome,
+    TotalChildren,
+    NumberChildrenAtHome,
+    Education,
+    Occupation,
+    HouseOwnerFlag,
+    NumberCarsOwned,
+    AddressLine1 as AddressLine1Customer,
+    AddressLine2 as AddressLine2Customer,
+    Phone,
+    DateFirstPurchase,
+    CustomerType,
+    CompanyName
+  FROM [$(vR_QvdExt)L1_MYSQL_dimcustomer.qvd] (qvd);
+Left Join
+  LOAD
+    GeographyKey as GeographyKeyCustomer,
+    ContinentName as ContinentNameCustomer,
+    StateProvinceName as StateProvinceNameCustomer,
+    RegionCountryName as RegionCountryNameCustomer
+  FROM [$(vR_QvdExt)L1_MYSQL_dimgeography.qvd] (qvd);
+Left Join
+  LOAD
+      CustomerKey,
+      "TAG",
+      ACTIVITY,
+      ACTIONABLE_TIP
+  FROM [$(vR_QvdExt)L1_MYSQL_dimRFM.qvd] (qvd);
+
+Store $(vNombreArchivo) into [$(vR_QvdTra)$(vNombreArchivo).qvd] (qvd);
+Drop Table $(vNombreArchivo);

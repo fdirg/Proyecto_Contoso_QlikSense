@@ -1,0 +1,55 @@
+﻿Set vNombreArchivo = L3_factsalesbugdet;
+
+$(vNombreArchivo):
+  LOAD
+      7 as CurrencyKey,
+      ChannelKey,
+      StoreKey,
+      ProductKey,
+      DateKey,
+      BudgetRevenue
+  FROM [$(vR_QvdTra)L2_factbudget.qvd] (qvd);
+  Concatenate
+  LOAD
+      DateKey,
+      StoreKey,
+      ProductKey,
+      PromotionKey,
+      CurrencyKey,
+      CustomerKey,
+      SalesQuantity,
+      SalesAmount,
+      ReturnQuantity,
+      ReturnAmount,
+      DiscountQuantity,
+      DiscountAmount,
+      TotalCost,
+      SalesOrderNumberQuantity,
+      GrossQuantity,
+      GrossMargin,
+      NetMargin,
+      NetQuantity
+  FROM [$(vR_QvdTra)L2_factonlinesales.qvd] (qvd);
+  Concatenate
+  LOAD
+      DateKey,
+      channelKey as ChannelKey,
+      StoreKey,
+      ProductKey,
+      PromotionKey,
+      CurrencyKey,
+      UnitCost,
+      UnitPrice,
+      SalesQuantity,
+      ReturnQuantity,
+      ReturnAmount,
+      DiscountQuantity,
+      DiscountAmount,
+      TotalCost,
+      SalesAmount,
+      GrossMargin,
+      NetMargin
+  FROM [$(vR_QvdTra)L2_factsales.qvd] (qvd);
+
+Store $(vNombreArchivo) into [$(vR_QvdTra)$(vNombreArchivo).qvd] (qvd);
+Drop Table $(vNombreArchivo);

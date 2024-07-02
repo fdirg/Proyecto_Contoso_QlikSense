@@ -1,0 +1,49 @@
+Set vNombreArchivo = L2_dimproduct;
+
+$(vNombreArchivo):
+  LOAD
+    ProductKey,
+    ProductLabel,
+    ProductName,
+    ProductSubcategoryKey,
+    Manufacturer,
+    BrandName,
+    ClassID,
+    ClassName,
+    StyleID,
+    StyleName,
+    ColorID,
+    ColorName,
+    Size,
+    SizeRange,
+    SizeUnitMeasureID,
+    Weight,
+    WeightUnitMeasureID,
+    UnitOfMeasureID,
+    UnitOfMeasureName,
+    StockTypeID,
+    StockTypeName,
+    UnitCost,
+    UnitPrice,
+    AvailableForSaleDate,
+    StopSaleDate,
+    StatusProduct,
+    ImageURL,
+    ProductURL
+  FROM [$(vR_QvdExt)L1_MYSQL_dimproduct.qvd] (qvd);
+Left Join
+  LOAD
+    ProductSubcategoryKey,
+    ProductSubcategoryLabel,
+    ProductSubcategoryName,
+    ProductCategoryKey
+  FROM [$(vR_QvdExt)L1_MYSQL_dimproductsubcategory.qvd] (qvd);
+Left Join
+  LOAD
+    ProductCategoryKey,
+    ProductCategoryLabel,
+    ProductCategoryName
+  FROM [$(vR_QvdExt)L1_MYSQL_dimproductcategory.qvd] (qvd);
+  
+Store $(vNombreArchivo) into [$(vR_QvdTra)$(vNombreArchivo).qvd] (qvd);
+Drop Table $(vNombreArchivo);

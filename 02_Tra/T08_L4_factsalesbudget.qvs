@@ -1,0 +1,65 @@
+﻿Set vNombreArchivo = L4_factsalesbudget;
+
+Map_Currency:
+  Mapping
+    LOAD
+        CurrencyKey,
+        CurrencyName
+    FROM [$(vR_QvdExt)L1_MYSQL_dimcurrency.qvd] (qvd);
+
+Map_ExchangeRate_USD:
+  Mapping
+    LOAD
+        Num(Floor(DateKey)) as DateKey,
+        AverageRate
+    FROM [$(vR_QvdExt)L1_MYSQL_factexchangerate.qvd] (qvd)
+    Where CurrencyKey = 1;
+
+
+
+$(vNombreArchivo):
+  Load *,
+      SalesAmount_EURO / ExchangeRate_USD as SalesAmount_USD,
+      DiscountAmount_EURO / ExchangeRate_USD as DiscountAmount_USD,
+      ReturnAmount_EURO / ExchangeRate_USD as ReturnAmount_USD,
+      TotalCost_EURO / ExchangeRate_USD as TotalCost_USD,
+      GrossMargin_EURO / ExchangeRate_USD as GrossMargin_USD,
+      NetMargin_EURO / ExchangeRate_USD as NetMargin_USD,
+      BudgetRevenue_EURO / ExchangeRate_USD as BudgetRevenue_USD,
+      UnitCost_EURO / ExchangeRate_USD as UnitCost_USD,
+      UnitPrice_EURO / ExchangeRate_USD as UnitPrice_USD;
+  LOAD
+      ChannelKey,
+      StoreKey,
+      ProductKey,
+      DateKey,
+      PromotionKey,
+      CurrencyKey,
+      ApplyMap('Map_Currency', CurrencyKey, 'S/D') as Currency,
+      NetQuantity,
+      CustomerKey,
+      SalesQuantity,
+      ReturnQuantity,
+      DiscountQuantity,
+      SalesOrderNumberQuantity,
+      GrossQuantity,
+      
+      SalesAmount as SalesAmount_EURO,
+      DiscountAmount as DiscountAmount_EURO,
+      ReturnAmount as ReturnAmount_EURO,
+      TotalCost as TotalCost_EURO,
+      GrossMargin as GrossMargin_EURO,
+      NetMargin as NetMargin_EURO,
+      BudgetRevenue as BudgetRevenue_EURO,
+      UnitCost as UnitCost_EURO,
+      UnitPrice as UnitPrice_EURO,
+      
+      ApplyMap('Map_ExchangeRate_USD', DateKey, 'S/D') as ExchangeRate_USD
+  FROM [$(vR_QvdTra)L3_factsalesbugdet.qvd] (qvd);
+
+Drop Field CurrencyKey, Currency From $(vNombreArchivo);
+
+Store $(vNombreArchivo) into [$(vR_QvdTra)$(vNombreArchivo).qvd] (qvd);
+Drop Table $(vNombreArchivo);
+
+Let vNombreArchivo = Null();

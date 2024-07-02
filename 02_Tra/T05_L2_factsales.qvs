@@ -1,0 +1,52 @@
+﻿Set vNombreArchivo = L2_factsales;
+Set vCampos = '
+			channelKey,
+            StoreKey,
+            ProductKey,
+            PromotionKey,
+            CurrencyKey,
+            UnitCost,
+            UnitPrice
+      		';
+
+Tbl_Tmp0:  
+  LOAD
+      MonthStart(DateKey) as DateKey,
+      $(vCampos),
+
+      sum(SalesQuantity) as SalesQuantity,
+      sum(ReturnQuantity) as ReturnQuantity,
+      sum(ReturnAmount) as ReturnAmount,
+      sum(DiscountQuantity) as DiscountQuantity,
+      sum(DiscountAmount) as DiscountAmount,
+      sum(TotalCost) as TotalCost,
+      sum(SalesAmount) as SalesAmount 
+  FROM [$(vR_QvdExt)L1_MYSQL_factsales.qvd] (qvd)
+  Group by
+          MonthStart(DateKey),
+          $(vCampos);
+
+$(vNombreArchivo):
+  Load 
+      *,
+      GrossMargin - ReturnAmount as NetMargin;
+  Load
+      DateKey,
+      $(vCampos),
+
+      SalesQuantity,
+      ReturnQuantity,
+      ReturnAmount,
+      DiscountQuantity,
+      DiscountAmount,
+      TotalCost,
+      SalesAmount,
+      SalesAmount - DiscountAmount - TotalCost as GrossMargin
+  Resident Tbl_Tmp0;
+  Drop Table Tbl_Tmp0;
+
+Store $(vNombreArchivo) into [$(vR_QvdTra)$(vNombreArchivo).qvd] (qvd);
+Drop Table $(vNombreArchivo);
+
+Let vNombreArchivo = Null();
+Let vCampos = Null();

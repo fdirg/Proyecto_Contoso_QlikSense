@@ -1,0 +1,63 @@
+﻿Set vNombreArchivo = L2_factbudget;
+
+Tbl_Tmp0:
+CrossTable(DateKey,BudgetRevenue, 3)
+LOAD
+    ChannelKey,
+    StoreKey,
+    ProductKey,
+    "39083",
+    "39114",
+    "39142",
+    "39173",
+    "39203",
+    "39234",
+    "39264",
+    "39295",
+    "39326",
+    "39356",
+    "39387",
+    "39417",
+    "39448",
+    "39479",
+    "39508",
+    "39539",
+    "39569",
+    "39600",
+    "39630",
+    "39661",
+    "39692",
+    "39722",
+    "39753",
+    "39783",
+    "39814",
+    "39845",
+    "39873",
+    "39904",
+    "39934",
+    "39965",
+    "39995",
+    "40026",
+    "40057",
+    "40087",
+    "40118",
+    "40148"
+FROM [$(vR_QvdExt)L1_XSLX_factbudget.qvd]
+(qvd);
+
+$(vNombreArchivo):
+NoConcatenate
+LOAD
+    ChannelKey,
+    StoreKey,
+    ProductKey,
+    Num(Num#(DateKey)) as DateKey,
+    BudgetRevenue
+Resident Tbl_Tmp0
+Where BudgetRevenue > 0;
+Drop Table Tbl_Tmp0;
+
+Store $(vNombreArchivo) into [$(vR_QvdTra)$(vNombreArchivo).qvd] (qvd);
+Drop Table $(vNombreArchivo);
+
+Let vNombreArchivo = Null();

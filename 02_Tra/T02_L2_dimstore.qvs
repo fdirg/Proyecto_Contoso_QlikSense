@@ -1,0 +1,47 @@
+Set vNombreArchivo = L2_dimstore;
+
+$(vNombreArchivo):
+  LOAD
+      StoreKey,
+      GeographyKey,
+      StoreManager,
+      StoreType,
+      StoreName,
+      StoreDescription,
+      Status,
+      OpenDate,
+      CloseDate,
+      EntityKey,
+      ZipCode,
+      ZipCodeExtension,
+      StorePhone,
+      StoreFax,
+      AddressLine1,
+      AddressLine2,
+      CloseReason,
+      EmployeeCount,
+      SellingAreaSize,
+      Date(floor(LastRemodelDate)) as LastRemodelDate
+  FROM [$(vR_QvdExt)L1_MYSQL_dimstore.qvd] (qvd);
+Left Join
+  LOAD
+      GeographyKey,
+      GeographyTypeKey,
+      GeographyType,
+      ContinentName,
+      CityName,
+      StateProvinceName,
+      RegionCountryName
+  FROM [$(vR_QvdExt)L1_MYSQL_dimgeography.qvd] (qvd);
+
+Rename field GeographyKey to GeographyKeyStore, 
+             ContinentName to ContinentNameStore, 
+             CityName to CityNameStore, 
+             StateProvinceName to StateProvinceNameStore, 
+             RegionCountryName to RegionCountryNameStore, 
+             Status to StatusStore,
+             AddressLine1 to AddressLine1Store,
+             AddressLine2 to AddressLine2Store;
+
+Store $(vNombreArchivo) into [$(vR_QvdTra)$(vNombreArchivo).qvd] (qvd);
+Drop Table $(vNombreArchivo);
