@@ -1,0 +1,13 @@
+﻿Let vR_Ambiente = Null();
+
+Let vR_Proyecto = Null();
+
+Let vR_Data = Null();
+
+Let vR_Qvd = Null();
+Let vR_QvdExt = Null();
+Let vR_QvdTra = Null();
+
+Let vR_Qvs = Null();
+Let vR_QvsExt = Null();
+Let vR_QvsTra = Null();

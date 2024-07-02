@@ -1,0 +1,18 @@
+﻿SET vR_Ambiente = $(vR_Root)App_Develop/;
+
+/*R = Root*/
+SET vR_Proyecto = $(vAmbiente)01_SalesAnalysis/V1/;
+
+SET vR_Data = $(vR_Proyecto)01_Data/;
+
+SET vR_Qvd = $(vR_Proyecto)02_Qvd/;
+SET vR_QvdExt = $(vR_Qvd)01_Ext/;
+SET vR_QvdTra = $(vR_Qvd)02_Tra/;
+
+SET vR_Qvs = $(vR_Proyecto)03_Qvs/;
+SET vR_QvsExt = $(vR_Qvs)01_Ext/;
+SET vR_QvsTra = $(vR_Qvs)02_Tra/;
+
+/*Conexion base de datos*/
+LIB CONNECT TO 'Jupi G8:MySQL';
+
